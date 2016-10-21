@@ -44,6 +44,9 @@ let s:mode=0
 let s:center=1
 
 function! NumbersRelativeOff()
+    if index(g:numbers_exclude, &ft) >= 0
+        return
+    endif
     if v:version > 703 || (v:version == 703 && has('patch1115'))
         set norelativenumber
     else
@@ -52,16 +55,25 @@ function! NumbersRelativeOff()
 endfunction
 
 function! SetNumbers()
+    if index(g:numbers_exclude, &ft) >= 0
+        return
+    endif
     let s:mode = 1
     call ResetNumbers()
 endfunc
 
 function! SetRelative()
+    if index(g:numbers_exclude, &ft) >= 0
+        return
+    endif
     let s:mode = 0
     call ResetNumbers()
 endfunc
 
 function! NumbersToggle()
+    if index(g:numbers_exclude, &ft) >= 0
+        return
+    endif
     if (s:mode == 1)
         let s:mode = 0
         set relativenumber
@@ -72,6 +84,9 @@ function! NumbersToggle()
 endfunc
 
 function! ResetNumbers()
+    if index(g:numbers_exclude, &ft) >= 0
+        return
+    endif
     if(s:center == 0)
         call NumbersRelativeOff()
     elseif(s:mode == 0)
@@ -79,24 +94,33 @@ function! ResetNumbers()
     else
         call NumbersRelativeOff()
     end
-    if index(g:numbers_exclude, &ft) >= 0
-        setlocal norelativenumber
-        setlocal nonumber
-    endif
+    " if index(g:numbers_exclude, &ft) >= 0
+    "     setlocal norelativenumber
+    "     setlocal nonumber
+    " endif
 endfunc
 
 function! Center()
+    if index(g:numbers_exclude, &ft) >= 0
+        return
+    endif
     let s:center = 1
     call ResetNumbers()
 endfunc
 
 function! Uncenter()
+    if index(g:numbers_exclude, &ft) >= 0
+        return
+    endif
     let s:center = 0
     call ResetNumbers()
 endfunc
 
 
 function! NumbersEnable()
+    if index(g:numbers_exclude, &ft) >= 0
+        return
+    endif
     let g:enable_numbers = 1
     :set relativenumber
     augroup enable
@@ -113,6 +137,9 @@ function! NumbersEnable()
 endfunc
 
 function! NumbersDisable()
+    if index(g:numbers_exclude, &ft) >= 0
+        return
+    endif
     let g:enable_numbers = 0
     :set nu
     :set nu!
@@ -123,6 +150,9 @@ function! NumbersDisable()
 endfunc
 
 function! NumbersOnOff()
+    if index(g:numbers_exclude, &ft) >= 0
+        return
+    endif
     if (g:enable_numbers == 1)
         call NumbersDisable()
     else
